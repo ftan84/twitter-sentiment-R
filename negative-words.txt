@@ -3040,7 +3040,7 @@ nauseate
 nauseates
 nauseating
 nauseatingly
-naïve
+na?ve
 nebulous
 nebulously
 needless
@@ -4816,3 +4816,7 @@ zealot
 zealous
 zealously
 zombie
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+; user added
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+wtf

@@ -15,8 +15,8 @@ library(ggplot2)
 library(ggthemes)
 library(wordcloud)
 
-query <- 'slothweek' # The word we want to analyze. Change this
-maxTweets <- 10000 # The maximum number of tweets to search
+query <- 'usa fifa world cup' # The word we want to analyze. Change this
+maxTweets <- 5000 # The maximum number of tweets to search
 startDate <- '2014-01-01'
 
 consumer.key <- 'v5b3mm9hRjZ7kL7gcOUvxwr4m'
@@ -49,7 +49,7 @@ score.sentiment <- function(sentences, pos.words, neg.words, .progress='none') {
 pos.words <- scan('positive-words.txt', what='character', comment.char=';')
 neg.words <- scan('negative-words.txt', what='character', comment.char=';')
 pos.words <- c(pos.words, 'upgrade')
-neg.words <- c(neg.words, 'wtf', 'fail', 'epicfail')
+# neg.words <- c(neg.words, 'wtf', 'fail', 'epicfail')
 
 # Retrieve tweets based on query
 tweets <- searchTwitter(query, n=maxTweets, since=startDate)
@@ -65,23 +65,23 @@ write.csv(sentiment.scores, file='scores.csv', row.names=TRUE, fileEncoding='UTF
 hist.plot <- ggplot() + geom_histogram(data=sentiment.scores, aes(x=score))
 hist.plot + theme_economist() + scale_colour_economist()
 
-# Uncomment these 
-require(tm)
-require(wordcloud)
-require(RColorBrewer)
-sentiment.scores$text <- encodeString(as.character(sentiment.scores$text))
-corp <- Corpus(DataframeSource(data.frame(as.character(sentiment.scores[ ,2]))))
-corp <- tm_map(corp, tolower)
-corp <- tm_map(corp, removePunctuation)
-corp <- tm_map(corp, function(x) removeWords(x, stopwords()))
-corp <- tm_map(corp, PlainTextDocument)
-ap.tdm <- TermDocumentMatrix(corp)
-ap.m <- as.matrix(ap.tdm)
-ap.v <- sort(rowSums(ap.m),decreasing=TRUE)
-ap.d <- data.frame(word = names(ap.v),freq=ap.v)
-table(ap.d$freq)
-pal2 <- brewer.pal(8,"Dark2")
-png("wordcloud_packages.png", width=1280,height=800)
-wordcloud(ap.d$word,ap.d$freq, scale=c(8,.2),min.freq=3,
-          max.words=Inf, random.order=FALSE, rot.per=.15, colors=pal2)
-dev.off()
+# Uncomment these for wordcloud
+# require(tm)
+# require(wordcloud)
+# require(RColorBrewer)
+# sentiment.scores$text <- encodeString(as.character(sentiment.scores$text))
+# corp <- Corpus(DataframeSource(data.frame(as.character(sentiment.scores[ ,2]))))
+# corp <- tm_map(corp, tolower)
+# corp <- tm_map(corp, removePunctuation)
+# corp <- tm_map(corp, function(x) removeWords(x, stopwords()))
+# corp <- tm_map(corp, PlainTextDocument)
+# ap.tdm <- TermDocumentMatrix(corp)
+# ap.m <- as.matrix(ap.tdm)
+# ap.v <- sort(rowSums(ap.m),decreasing=TRUE)
+# ap.d <- data.frame(word = names(ap.v),freq=ap.v)
+# table(ap.d$freq)
+# pal2 <- brewer.pal(8,"Dark2")
+# png("wordcloud_packages.png", width=1280,height=800)
+# wordcloud(ap.d$word,ap.d$freq, scale=c(8,.2),min.freq=3,
+#           max.words=Inf, random.order=FALSE, rot.per=.15, colors=pal2)
+# dev.off()
