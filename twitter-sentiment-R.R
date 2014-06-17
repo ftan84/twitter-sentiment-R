@@ -15,7 +15,7 @@ library(ggplot2)
 library(ggthemes)
 library(wordcloud)
 
-query <- 'e3' # The word we want to analyze. Change this
+query <- 'slothweek' # The word we want to analyze. Change this
 maxTweets <- 10000 # The maximum number of tweets to search
 startDate <- '2014-01-01'
 
@@ -45,16 +45,16 @@ score.sentiment <- function(sentences, pos.words, neg.words, .progress='none') {
     scores.df <- data.frame(score=scores, text=sentences)
     return(scores.df)
 }
+# Load the lexicon
+pos.words <- scan('positive-words.txt', what='character', comment.char=';')
+neg.words <- scan('negative-words.txt', what='character', comment.char=';')
+pos.words <- c(pos.words, 'upgrade')
+neg.words <- c(neg.words, 'wtf', 'fail', 'epicfail')
 
 # Retrieve tweets based on query
 tweets <- searchTwitter(query, n=maxTweets, since=startDate)
 tweets.df <- twListToDF(tweets)
 write.csv(tweets.df, file='data.csv', row.names=FALSE)
-
-pos.words <- scan('positive-words.txt', what='character', comment.char=';')
-neg.words <- scan('negative-words.txt', what='character', comment.char=';')
-pos.words <- c(pos.words, 'upgrade')
-neg.words <- c(neg.words, 'wtf', 'fail', 'epicfail')
 
 tweets.df <- read.csv('data.csv')
 tweets.df$text <- as.factor(tweets.df$text)
@@ -65,11 +65,7 @@ write.csv(sentiment.scores, file='scores.csv', row.names=TRUE)
 # hist.plot <- ggplot() + geom_histogram(data=sentiment.scores, aes(x=score))
 # hist.plot + theme_economist() + scale_colour_economist()
 
-# tweet.corpus <- Corpus(DataframeSource(data.frame(sentiment.scores[ , 2])))
-# tweet.corpus <- tm_map(tweet.corpus, removePunctuation)
-# tweet.corpus <- tm_map(tweet.corpus, tolower)
-# tweet.corpus <- tm_
-# 
+
 # require(XML)
 # require(tm)
 # require(wordcloud)
@@ -80,6 +76,7 @@ write.csv(sentiment.scores, file='scores.csv', row.names=TRUE)
 # ap.corpus <- tm_map(ap.corpus, removePunctuation)
 # ap.corpus <- tm_map(ap.corpus, tolower)
 # ap.corpus <- tm_map(ap.corpus, function(x) removeWords(x, stopwords("english")))
+# ap.corpus <- tm_map(ap.corput, PlainTextDocument)
 # ap.tdm <- TermDocumentMatrix(ap.corpus)
 # ap.m <- as.matrix(ap.tdm)
 # ap.v <- sort(rowSums(ap.m),decreasing=TRUE)
