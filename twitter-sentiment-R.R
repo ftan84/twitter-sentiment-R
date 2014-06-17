@@ -52,7 +52,7 @@ pos.words <- c(pos.words, 'upgrade')
 # neg.words <- c(neg.words, 'wtf', 'fail', 'epicfail')
 
 # Retrieve tweets based on query
-tweets <- searchTwitter(query, n=maxTweets, since=startDate)
+tweets <- searchTwitter(query, n=maxTweets, since=startDate, retryOnRateLimit=3)
 tweets.df <- twListToDF(tweets)
 write.csv(tweets.df, file='data.csv', row.names=FALSE)
 
