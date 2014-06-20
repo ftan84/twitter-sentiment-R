@@ -15,8 +15,8 @@ library(ggplot2)
 library(ggthemes)
 library(wordcloud)
 
-query <- 'usa fifa world cup' # The word we want to analyze. Change this
-maxTweets <- 5000 # The maximum number of tweets to search
+query <- 'slothweek' # The word we want to analyze. Change this
+maxTweets <- 10000 # The maximum number of tweets to search
 startDate <- '2014-01-01'
 
 consumer.key <- 'v5b3mm9hRjZ7kL7gcOUvxwr4m'
@@ -29,6 +29,7 @@ score.sentiment <- function(sentences, pos.words, neg.words, .progress='none') {
     require(plyr)
     require(stringr)
     scores = laply(sentences, function(sentence, pos.words, neg.words) {
+        sentence <- gsub("[^[:alnum:]///' ]", "", sentence)
         sentence <- gsub('[[:punct:]]', '', sentence)
         sentence <- gsub('[[:cntrl:]]', '', sentence)
         sentence <- gsub('\\d+', '', sentence)
@@ -52,11 +53,11 @@ pos.words <- c(pos.words, 'upgrade')
 # neg.words <- c(neg.words, 'wtf', 'fail', 'epicfail')
 
 # Retrieve tweets based on query
-tweets <- searchTwitter(query, n=maxTweets, since=startDate, retryOnRateLimit=3)
+tweets <- searchTwitter(query, n=maxTweets, since=startDate, lang='en', locale='en', retryOnRateLimit=3)
 tweets.df <- twListToDF(tweets)
-write.csv(tweets.df, file='data.csv', row.names=FALSE)
+write.csv(tweets.df, file='data.csv', row.names=FALSE, fileEncoding='UTF-8')
 
-tweets.df <- read.csv('data.csv')
+# tweets.df <- read.csv('data.csv')
 tweets.df$text <- as.factor(tweets.df$text)
 sentiment.scores <- score.sentiment(tweets.df$text, pos.words, neg.words, .progress='text')
 write.csv(sentiment.scores, file='scores.csv', row.names=TRUE, fileEncoding='UTF-8', quote=TRUE)

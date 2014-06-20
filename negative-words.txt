@@ -3903,8 +3903,8 @@ slooow
 sloow
 sloppily
 sloppy
-sloth
-slothful
+; sloth
+; slothful
 slow
 slow-moving
 slowed
